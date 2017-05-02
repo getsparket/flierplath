@@ -14,6 +14,15 @@
 (s/def :nav.state/routes (s/coll-of :nav/route :kind vector?))
 (s/def :nav.state/index integer?)
 (s/def :nav/tab-state (s/keys :req [:nav.state/index :nav.state/routes]))
+(s/def :matt/matt string?)
+(s/def :fin.stuff/asset integer?)
+(s/def :fin.stuff/liab integer?)
+(s/def :fin.stuff/item (s/keys :req [:fin.stuff/asset :fin.stuff/name]))
+(s/def :fin/stuff (s/coll-of :fin.stuff/item))
+
+#_(s/def :matt.finances/assets (s/coll-of :matt.finances/asset :kind vector?))
+#_(s/def :matt.finances/liability integer?)
+
 (s/def ::app-db
   (s/keys :req [:nav/tab-state]))
 
@@ -22,4 +31,8 @@
                                           :routes [#:nav.route{:key :IndexKey :routeName :Index}
                                                    #:nav.route{:key :SettingsKey :routeName :Settings}]}
              :nav/stack-state #:nav.routeName {:Index #:nav.state {:index  0
-                                                                   :routes [#:nav.route {:key :Home :routeName :Home}]}}})
+                                                                   :routes [#:nav.route {:key :Home :routeName :Home}]}}
+             :matt/matt "default"
+             :fin/stuff [{:fin.stuff/asset 69 :fin.stuff/name "thing1"} {:fin.stuff/asset 420 :fin.stuff/name "thing2"}]})
+
+

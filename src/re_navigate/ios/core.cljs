@@ -5,11 +5,12 @@
             [clojure.data :as d]
             [re-navigate.subs]))
 (js* "/* @flow */")
-
+(enable-console-print!)
 (def ReactNative (js/require "react-native"))
 
 (def app-registry (.-AppRegistry ReactNative))
 (def text (r/adapt-react-class (.-Text ReactNative)))
+(def input (r/adapt-react-class (.-TextInput ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def image (r/adapt-react-class (.-Image ReactNative)))
 (def react-navigation (js/require "react-navigation"))
@@ -39,6 +40,21 @@
                  :font-weight "bold"}
    })
 
+(defn input-and-list-shit [props]
+  (let [something (subscribe [:get-things])]
+    [view {:style {:align-items      "center"
+                   :justify-content  "center"
+                   :flex             1
+                   :background-color (random-color)}}
+     [view {:style {:background-color "rgba(256,256,256,0.5)"
+                    :margin-bottom    20}}
+      [text {:style (style :title)} "your things: " @something]]
+
+     [touchable-highlight {:on-press #(dispatch [:nav/reset "Index"])
+                           :style    (style :button)}
+      [text {:style (style :button-text)} "RESET"]]]
+    ))
+
 (defn resd [props]
   (let [number (-> props (get "params") (get "number"))
         route-name "Index"]
@@ -48,7 +64,7 @@
                    :background-color (random-color)}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
-      [text {:style (style :title)} "Card number " number]]
+      [text {:style (style :title)} "fun" number]]
      [touchable-highlight
       {:style    (style :button)
        :on-press #(dispatch
@@ -58,6 +74,52 @@
                                    :params    {:number (inc number)}}
                       route-name]])}
       [text {:style (style :button-text)} "Next"]]
+     [touchable-highlight {:on-press #(dispatch [:nav/reset route-name])
+                           :style    (style :button)}
+      [text {:style (style :button-text)} "RESET"]]]))
+
+(defn matt [props]
+  (let [name (-> props (get "params") (get "name"))
+        my-name (subscribe [:matt/matt])
+        my-asset (subscribe [:fin.stuff/asset])
+        temp-var (r/atom "")
+        route-name "Index"]
+    [view {:style {:align-items      "center"
+                   :justify-content  "center"
+                   :flex             1
+                   :background-color (random-color)}}
+     [view {:style {:background-color "rgba(256,256,256,0.5)"
+                    :margin-bottom    20}}
+      [text {:style (style :title)} "Name entered" @my-name]]
+     [input {:style {:padding-left 10
+                     :font-size 16
+                     :border-width 2
+                     :border-color "rgba(0,0,0,0.4)"
+                     :border-radius 6}
+             :height 40
+             :auto-correct true
+             :maxLength 32
+             :clear-button-mode "always"
+             :value @my-name
+             :placeholder @my-name
+             :on-change-text (fn [value]
+                               (dispatch [:update-matt  value])
+                               )} ]
+     [input {:style {:padding-left 10
+                     :font-size 16
+                     :border-width 2
+                     :border-color "rgba(0,0,0,0.4)"
+                     :border-radius 6}
+             :height 40
+             :auto-correct true
+             :maxLength 32
+             :clear-button-mode "always"
+             :returnKeyType "go"
+             ;; :placeholder (str @my-asset
+             :on-change-text (fn [value]
+                               (reset! temp-var value)
+                               (r/flush))
+             }]
      [touchable-highlight {:on-press #(dispatch [:nav/reset route-name])
                            :style    (style :button)}
       [text {:style (style :button-text)} "RESET"]]]))
@@ -76,7 +138,7 @@
                  :padding          40
                  :align-items      "center"
                  :background-color (random-color)}}
-   [text {:style (style :title)} "Hejsan"]
+   [text {:style (style :title)} "placeholder"]
    [image {:source logo-img
            :style  {:width 80 :height 80 :margin-bottom 30}}]
    [touchable-highlight {:style    (style :button)
@@ -86,7 +148,33 @@
                                                      :routeName :Card
                                                      :params    {:number 1}}
                                         "Index"]])}
-    [text {:style (style :button-text)} "press me"]]])
+    [text {:style (style :button-text)} "press me"]]
+   [touchable-highlight {:style    (style :button)
+                         :on-press #(dispatch
+                                     [:nav/navigate
+                                      [#:nav.route {:key       :0
+                                                    :routeName :Settings
+                                                    :params    {:number 1}}
+                                       "Index"]])}
+    [text {:style (style :button-text)} "settings"]]
+   [touchable-highlight {:style    (style :button)
+                         :on-press #(dispatch
+                                     [:nav/navigate
+                                      [#:nav.route {:key       :0
+                                                    :routeName :Matt
+                                                    :params    {:name "m"}}
+                                       "Index"]])}
+    [text {:style (style :button-text)} "matt"]]
+   [touchable-highlight {:style    (style :button)
+                         :on-press #(dispatch
+                                     [:nav/navigate
+                                      [#:nav.route {:key       :0
+                                                    :routeName :InputAndListShit
+                                                    :params    {:name "m"}}
+                                       "Index"]])}
+    [text {:style (style :button-text)} "input-list-and-shit"]]
+
+   ])
 
 
 (defn nav-wrapper [component title]
@@ -100,10 +188,21 @@
 (def resd-comp (nav-wrapper resd #(str "Card "
                                        (aget % "state" "params" "number"))))
 
+(def input-and-list-shit-comp (nav-wrapper input-and-list-shit #(str "Card "
+                                       (aget % "state" "params" "number"))))
+
+(def matt-comp (nav-wrapper matt #(str "Card "
+                                       (aget % "state" "params" "number"))))
+
+(def settings-comp (nav-wrapper settings #(str "The Settings ")))
+
 (def app-root-comp (nav-wrapper app-root "Welcome"))
 
 (def stack-router {:Home {:screen app-root-comp}
-                   :Card {:screen resd-comp}})
+                   :Card {:screen resd-comp}
+                   :InputAndListShit {:screen input-and-list-shit-comp}
+                   :Matt {:screen matt-comp}
+                   :Settings {:screen settings-comp}})
 
 
 (def sn (r/adapt-react-class (stack-navigator (clj->js stack-router))))
@@ -124,8 +223,10 @@
 
 
 (defn tab-navigator-inst []
-  (tab-navigator (clj->js tab-router) (clj->js {:order            ["Index" "Settings"]
-                                                :initialRouteName "Index"})))
+  (tab-navigator
+    (clj->js tab-router)
+    (clj->js {:order ["Index" "Settings" #_"InputAndListShit" #_"Matt"]
+              :initialRouteName "Index"})))
 
 (defn get-state [action]
   (-> (tab-navigator-inst)
@@ -136,9 +237,9 @@
   (let [tni (tab-navigator-inst)]
     (aset tni "router" "getStateForAction" #(let [new-state (get-state %)]
                                               (js/console.log "STATE" % new-state)
-                                                             (dispatch [:nav/set new-state])
-                                                             new-state) #_(do (js/console.log %)
-                                                                                                                                        #_(get-state %)))
+                                              (dispatch [:nav/set new-state])
+                                              new-state) #_(do (js/console.log %)
+                                                               #_(get-state %)))
     (r/adapt-react-class tni)))
 
 (defn start []

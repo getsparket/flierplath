@@ -36,6 +36,20 @@
     app-db))
 
 (reg-event-db
+ :update-matt
+ validate-spec
+ (fn [db [_ new-matt]]
+   (assoc db :matt/matt new-matt)))
+
+(reg-event-db
+ :change-asset
+ validate-spec
+ (fn [db [_ new-val]]
+   (let [_ (println new-val)])
+   (-> db
+       (assoc-in [:fin/stuff :fin.stuff/asset] (cljs.reader/read-string new-val)))))
+
+(reg-event-db
   :nav/navigate
   validate-spec
   (fn [db [_ [value route-name]]]
