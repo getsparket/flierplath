@@ -86,6 +86,7 @@
   (let [name (-> props (get "params") (get "name"))
         my-name (subscribe [:matt/matt])
         my-asset (subscribe [:fin.stuff/asset])
+        list-of-assets (subscribe [:list-assets])
         route-name "Index"]
     [view {:style {:align-items      "center"
                    :justify-content  "center"
@@ -146,7 +147,8 @@
       [text {:style (style :button-text)} "RESET"]]
      [touchable-highlight {:on-press #(dispatch [:add-asset {:fin.stuff/name @name-of-asset :fin.stuff/asset @price-of-asset}])
                            :style    (style :button)}
-      [text {:style (style :button-text)} "add to db"]]]))
+      [text {:style (style :button-text)} "add to db"]]
+     [view [text "having fun" @list-of-assets]]]))
 
 (defn settings []
   [view {:style {:flex 1
@@ -188,7 +190,7 @@
                                                     :routeName :Matt
                                                     :params    {:name "m"}}
                                        "Index"]])}
-    [text {:style (style :button-text)} "matt"]]
+    [text {:style (style :button-text)} "assets"]]
    [touchable-highlight {:style    (style :button)
                          :on-press #(dispatch
                                      [:nav/navigate

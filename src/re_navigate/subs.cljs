@@ -25,3 +25,8 @@
  :get-things
  (fn [db _]
    (str db #_(get-in db [:fin/stuff]))))
+
+(reg-sub
+ :list-assets
+ (fn [db _]
+   (str (:fin/stuff db))))
