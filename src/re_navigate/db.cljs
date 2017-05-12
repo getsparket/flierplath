@@ -33,6 +33,6 @@
              :nav/stack-state #:nav.routeName {:Index #:nav.state {:index  0
                                                                    :routes [#:nav.route {:key :Home :routeName :Home}]}}
              :matt/matt "default"
-             :fin/stuff [{:fin.stuff/asset 69 :fin.stuff/name "thing1"} {:fin.stuff/asset 420 :fin.stuff/name "thing2"}]})
+             :fin/stuff [{:fin.stuff/asset 5000 :fin.stuff/name "cash"} {:fin.stuff/asset 100000 :fin.stuff/name "house"}]})
 
 

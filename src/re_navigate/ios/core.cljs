@@ -27,7 +27,7 @@
 
 (def style
   {
-   :title       {:font-size   30
+   :title       {:font-size   16
                  :font-weight "100"
                  :margin      20
                  :text-align  "center"}
@@ -78,11 +78,14 @@
                            :style    (style :button)}
       [text {:style (style :button-text)} "RESET"]]]))
 
+
+(def name-of-asset (reagent.ratom/atom ""))
+(def price-of-asset (reagent.ratom/atom 0))
+
 (defn matt [props]
   (let [name (-> props (get "params") (get "name"))
         my-name (subscribe [:matt/matt])
         my-asset (subscribe [:fin.stuff/asset])
-        temp-var (r/atom "")
         route-name "Index"]
     [view {:style {:align-items      "center"
                    :justify-content  "center"
@@ -90,7 +93,7 @@
                    :background-color (random-color)}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
-      [text {:style (style :title)} "Name entered" @my-name]]
+      [text {:style (style :title)} "add asset:" @name-of-asset]]
      [input {:style {:padding-left 10
                      :font-size 16
                      :border-width 2
@@ -103,8 +106,8 @@
              :value @my-name
              :placeholder @my-name
              :on-change-text (fn [value]
-                               (dispatch [:update-matt  value])
-                               )} ]
+                               (dispatch [:update-matt value])
+                               )}]
      [input {:style {:padding-left 10
                      :font-size 16
                      :border-width 2
@@ -117,12 +120,33 @@
              :returnKeyType "go"
              ;; :placeholder (str @my-asset
              :on-change-text (fn [value]
-                               (reset! temp-var value)
-                               (r/flush))
-             }]
+                               (let [_ (println "name is:" value @name-of-asset)])
+                               (reset! name-of-asset value)
+                               (r/flush))}]
+     [input {:style {:padding-left 10
+                     :font-size 16
+                     :border-width 2
+                     :border-color "rgba(0,0,0,0.4)"
+                     :border-radius 6}
+             :height 40
+             :auto-correct true
+             :maxLength 32
+             :clear-button-mode "always"
+             :returnKeyType "go"
+             ;; :placeholder (str @my-asset
+             :on-change-text (fn [value]
+                               (let [_ (println "price is" value @price-of-asset)])
+                               (reset! price-of-asset value)
+                               (r/flush))}]
+
+
+
      [touchable-highlight {:on-press #(dispatch [:nav/reset route-name])
                            :style    (style :button)}
-      [text {:style (style :button-text)} "RESET"]]]))
+      [text {:style (style :button-text)} "RESET"]]
+     [touchable-highlight {:on-press #(dispatch [:add-asset {:fin.stuff/name @name-of-asset :fin.stuff/asset @price-of-asset}])
+                           :style    (style :button)}
+      [text {:style (style :button-text)} "add to db"]]]))
 
 (defn settings []
   [view {:style {:flex 1
@@ -191,7 +215,7 @@
 (def input-and-list-shit-comp (nav-wrapper input-and-list-shit #(str "Card "
                                        (aget % "state" "params" "number"))))
 
-(def matt-comp (nav-wrapper matt #(str "Card "
+(def matt-comp (nav-wrapper matt #(str "Inserting assets screen "
                                        (aget % "state" "params" "number"))))
 
 (def settings-comp (nav-wrapper settings #(str "The Settings ")))
@@ -245,9 +269,7 @@
 (defn start []
   (let [nav-state (subscribe [:nav/tab-state])]
     (fn []
-      [tn])
-    )
-  )
+      [tn])))
 
 (defn init []
   (dispatch-sync [:initialize-db])

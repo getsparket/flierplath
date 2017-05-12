@@ -24,4 +24,4 @@
 (reg-sub
  :get-things
  (fn [db _]
-   (str (get-in db [:fin/stuff]))))
+   (str db #_(get-in db [:fin/stuff]))))
