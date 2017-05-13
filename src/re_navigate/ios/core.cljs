@@ -37,10 +37,9 @@
                  :border-radius    5}
    :button-text {:color       "white"
                  :text-align  "center"
-                 :font-weight "bold"}
-   })
+                 :font-weight "bold"}})
 
-(defn input-and-list-shit [props]
+(defn db-state [props]
   (let [something (subscribe [:get-db-state])]
     [view {:style {:align-items      "center"
                    :justify-content  "center"
@@ -155,7 +154,7 @@
                                                      :routeName :Card
                                                      :params    {:number 1}}
                                         "Index"]])}
-    [text {:style (style :button-text)} "press me"]]
+    [text {:style (style :button-text)} "example navigation"]]
    [touchable-highlight {:style    (style :button)
                          :on-press #(dispatch
                                      [:nav/navigate
@@ -176,7 +175,7 @@
                          :on-press #(dispatch
                                      [:nav/navigate
                                       [#:nav.route {:key       :0
-                                                    :routeName :InputAndListShit
+                                                    :routeName :DbState
                                                     :params    {:name "m"}}
                                        "Index"]])}
     [text {:style (style :button-text)} "app state"]]])
@@ -193,7 +192,7 @@
 (def resd-comp (nav-wrapper resd #(str "Card "
                                        (aget % "state" "params" "number"))))
 
-(def input-and-list-shit-comp (nav-wrapper input-and-list-shit #(str "Card "
+(def db-state-comp (nav-wrapper db-state #(str "Card "
                                        (aget % "state" "params" "number"))))
 
 (def matt-comp (nav-wrapper matt #(str "Inserting assets screen "
@@ -205,7 +204,7 @@
 
 (def stack-router {:Home {:screen app-root-comp}
                    :Card {:screen resd-comp}
-                   :InputAndListShit {:screen input-and-list-shit-comp}
+                   :DbState {:screen db-state-comp}
                    :Matt {:screen matt-comp}
                    :Settings {:screen settings-comp}})
 
@@ -230,7 +229,7 @@
 (defn tab-navigator-inst []
   (tab-navigator
     (clj->js tab-router)
-    (clj->js {:order ["Index" "Settings" #_"InputAndListShit" #_"Matt"]
+    (clj->js {:order ["Index" "Settings" #_"DbState" #_"Matt"]
               :initialRouteName "Index"})))
 
 (defn get-state [action]
