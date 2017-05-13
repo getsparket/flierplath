@@ -79,7 +79,7 @@
 (def name-of-asset (reagent.ratom/atom ""))
 (def price-of-asset (reagent.ratom/atom ""))
 
-(defn matt [props]
+(defn assets [props]
   (let [name (-> props (get "params") (get "name"))
         my-asset (subscribe [:fin.stuff/asset])
         list-of-assets (subscribe [:list-assets])
@@ -167,7 +167,7 @@
                          :on-press #(dispatch
                                      [:nav/navigate
                                       [#:nav.route {:key       :0
-                                                    :routeName :Matt
+                                                    :routeName :Assets
                                                     :params    {:name "m"}}
                                        "Index"]])}
     [text {:style (style :button-text)} "assets"]]
@@ -195,7 +195,7 @@
 (def db-state-comp (nav-wrapper db-state #(str "Card "
                                        (aget % "state" "params" "number"))))
 
-(def matt-comp (nav-wrapper matt #(str "Inserting assets screen "
+(def assets-comp (nav-wrapper assets #(str "Inserting assets screen "
                                        (aget % "state" "params" "number"))))
 
 (def settings-comp (nav-wrapper settings #(str "The Settings ")))
@@ -205,7 +205,7 @@
 (def stack-router {:Home {:screen app-root-comp}
                    :Card {:screen resd-comp}
                    :DbState {:screen db-state-comp}
-                   :Matt {:screen matt-comp}
+                   :Assets {:screen assets-comp}
                    :Settings {:screen settings-comp}})
 
 
@@ -229,7 +229,7 @@
 (defn tab-navigator-inst []
   (tab-navigator
     (clj->js tab-router)
-    (clj->js {:order ["Index" "Settings" #_"DbState" #_"Matt"]
+    (clj->js {:order ["Index" "Settings" #_"DbState" #_"Assets"]
               :initialRouteName "Index"})))
 
 (defn get-state [action]
