@@ -41,19 +41,17 @@
    })
 
 (defn input-and-list-shit [props]
-  (let [something (subscribe [:get-things])]
+  (let [something (subscribe [:get-db-state])]
     [view {:style {:align-items      "center"
                    :justify-content  "center"
                    :flex             1
                    :background-color (random-color)}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
-      [text {:style (style :title)} "your things: " @something]]
-
+      [text {:style (style :title)} "db state: " @something]]
      [touchable-highlight {:on-press #(dispatch [:nav/reset "Index"])
                            :style    (style :button)}
-      [text {:style (style :button-text)} "RESET"]]]
-    ))
+      [text {:style (style :button-text)} "back to index"]]]))
 
 (defn resd [props]
   (let [number (-> props (get "params") (get "number"))
@@ -64,7 +62,7 @@
                    :background-color (random-color)}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
-      [text {:style (style :title)} "fun" number]]
+      [text {:style (style :title)} "Number: " number]]
      [touchable-highlight
       {:style    (style :button)
        :on-press #(dispatch
@@ -76,15 +74,14 @@
       [text {:style (style :button-text)} "Next"]]
      [touchable-highlight {:on-press #(dispatch [:nav/reset route-name])
                            :style    (style :button)}
-      [text {:style (style :button-text)} "RESET"]]]))
+      [text {:style (style :button-text)} "back to index"]]]))
 
 
 (def name-of-asset (reagent.ratom/atom ""))
-(def price-of-asset (reagent.ratom/atom 0))
+(def price-of-asset (reagent.ratom/atom ""))
 
 (defn matt [props]
   (let [name (-> props (get "params") (get "name"))
-        my-name (subscribe [:matt/matt])
         my-asset (subscribe [:fin.stuff/asset])
         list-of-assets (subscribe [:list-assets])
         route-name "Index"]
@@ -94,21 +91,7 @@
                    :background-color (random-color)}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
-      [text {:style (style :title)} "add asset:" @name-of-asset]]
-     [input {:style {:padding-left 10
-                     :font-size 16
-                     :border-width 2
-                     :border-color "rgba(0,0,0,0.4)"
-                     :border-radius 6}
-             :height 40
-             :auto-correct true
-             :maxLength 32
-             :clear-button-mode "always"
-             :value @my-name
-             :placeholder @my-name
-             :on-change-text (fn [value]
-                               (dispatch [:update-matt value])
-                               )}]
+      [text {:style (style :title)} "add asset: " @name-of-asset "\nwith price: " @price-of-asset]]
      [input {:style {:padding-left 10
                      :font-size 16
                      :border-width 2
@@ -119,7 +102,7 @@
              :maxLength 32
              :clear-button-mode "always"
              :returnKeyType "go"
-             ;; :placeholder (str @my-asset
+             :placeholder "name of asset"
              :on-change-text (fn [value]
                                (let [_ (println "name is:" value @name-of-asset)])
                                (reset! name-of-asset value)
@@ -134,7 +117,7 @@
              :maxLength 32
              :clear-button-mode "always"
              :returnKeyType "go"
-             ;; :placeholder (str @my-asset
+             :placeholder "price. fails unless you type [0-9]*"
              :on-change-text (fn [value]
                                (let [_ (println "price is" value @price-of-asset)])
                                (reset! price-of-asset value)
@@ -144,7 +127,7 @@
 
      [touchable-highlight {:on-press #(dispatch [:nav/reset route-name])
                            :style    (style :button)}
-      [text {:style (style :button-text)} "RESET"]]
+      [text {:style (style :button-text)} "back to index"]]
      [touchable-highlight {:on-press #(dispatch [:add-asset {:fin.stuff/name @name-of-asset :fin.stuff/asset @price-of-asset}])
                            :style    (style :button)}
       [text {:style (style :button-text)} "add to db"]]
@@ -164,9 +147,7 @@
                  :padding          40
                  :align-items      "center"
                  :background-color (random-color)}}
-   [text {:style (style :title)} "placeholder"]
-   [image {:source logo-img
-           :style  {:width 80 :height 80 :margin-bottom 30}}]
+   [text {:style (style :title)} "flierplath"]
    [touchable-highlight {:style    (style :button)
                          :on-press #(dispatch
                                       [:nav/navigate
@@ -198,9 +179,7 @@
                                                     :routeName :InputAndListShit
                                                     :params    {:name "m"}}
                                        "Index"]])}
-    [text {:style (style :button-text)} "input-list-and-shit"]]
-
-   ])
+    [text {:style (style :button-text)} "app state"]]])
 
 
 (defn nav-wrapper [component title]

@@ -36,12 +36,6 @@
     app-db))
 
 (reg-event-db
- :update-matt
- validate-spec
- (fn [db [_ new-matt]]
-   (assoc db :matt/matt new-matt)))
-
-(reg-event-db
  :change-asset
  validate-spec
  (fn [db [_ new-val]]

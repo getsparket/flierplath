@@ -20,9 +20,6 @@
 (s/def :fin.stuff/item (s/keys :req [:fin.stuff/asset :fin.stuff/name]))
 (s/def :fin/stuff (s/coll-of :fin.stuff/item))
 
-#_(s/def :matt.finances/assets (s/coll-of :matt.finances/asset :kind vector?))
-#_(s/def :matt.finances/liability integer?)
-
 (s/def ::app-db
   (s/keys :req [:nav/tab-state]))
 
@@ -32,7 +29,6 @@
                                                    #:nav.route{:key :SettingsKey :routeName :Settings}]}
              :nav/stack-state #:nav.routeName {:Index #:nav.state {:index  0
                                                                    :routes [#:nav.route {:key :Home :routeName :Home}]}}
-             :matt/matt "default"
              :fin/stuff [{:fin.stuff/asset 5000 :fin.stuff/name "cash"} {:fin.stuff/asset 100000 :fin.stuff/name "house"}]})
 
 
