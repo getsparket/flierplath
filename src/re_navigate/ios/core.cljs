@@ -19,8 +19,6 @@
 (def tab-navigator (.-TabNavigator react-navigation))
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 
-(def logo-img (js/require "./images/cljs.png"))
-
 (def style
   {
    :title       {:font-size   16
