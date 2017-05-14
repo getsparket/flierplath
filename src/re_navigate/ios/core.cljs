@@ -21,10 +21,6 @@
 
 (def logo-img (js/require "./images/cljs.png"))
 
-(defn random-color
-  []
-  (js* "'#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6)"))
-
 (def style
   {
    :title       {:font-size   16
@@ -44,7 +40,7 @@
     [view {:style {:align-items      "center"
                    :justify-content  "center"
                    :flex             1
-                   :background-color (random-color)}}
+                   :background-color "#444444"}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
       [text {:style (style :title)} "db state: " @something]]
@@ -58,7 +54,7 @@
     [view {:style {:align-items      "center"
                    :justify-content  "center"
                    :flex             1
-                   :background-color (random-color)}}
+                   :background-color "#444444"}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
       [text {:style (style :title)} "Number: " number]]
@@ -87,7 +83,7 @@
     [view {:style {:align-items      "center"
                    :justify-content  "center"
                    :flex             1
-                   :background-color (random-color)}}
+                   :background-color "#444444"}}
      [view {:style {:background-color "rgba(256,256,256,0.5)"
                     :margin-bottom    20}}
       [text {:style (style :title)} "add asset: " @name-of-asset "\nwith price: " @price-of-asset]]
@@ -145,7 +141,7 @@
                  :flex             1
                  :padding          40
                  :align-items      "center"
-                 :background-color (random-color)}}
+                 :background-color "#444444"}}
    [text {:style (style :title)} "flierplath"]
    [touchable-highlight {:style    (style :button)
                          :on-press #(dispatch
