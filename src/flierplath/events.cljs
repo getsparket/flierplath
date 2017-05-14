@@ -1,8 +1,8 @@
-(ns re-navigate.events
+(ns flierplath.events
   (:require
     [re-frame.core :refer [reg-event-db after reg-event-fx]]
     [clojure.spec :as s]
-    [re-navigate.db :as db :refer [app-db]]))
+    [flierplath.db :as db :refer [app-db]]))
 
 ;; -- Interceptors ------------------------------------------------------------
 ;;
@@ -34,6 +34,26 @@
   validate-spec
   (fn [_ _]
     app-db))
+
+(reg-event-db
+ :change-asset
+ validate-spec
+ (fn [db [_ new-val]]
+   (let [_ (println new-val)])
+   (-> db
+       (assoc-in [:fin/stuff :fin.stuff/asset] (cljs.reader/read-string new-val)))))
+
+(defn update-db [the-db new-val]
+  (let [the-people (:fin/stuff the-db)
+        inty-new-val (assoc new-val :fin.stuff/asset (cljs.reader/read-string (:fin.stuff/asset new-val)))]
+    (assoc-in the-db [:fin/stuff] (conj the-people inty-new-val))))
+
+(reg-event-db
+ :add-asset
+ validate-spec
+ (fn [db [_ new-asset]]
+   (let [_ (println new-asset)])
+   (update-db db new-asset)))
 
 (reg-event-db
   :nav/navigate

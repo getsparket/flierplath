@@ -1,4 +1,4 @@
-(ns re-navigate.db
+(ns flierplath.db
   (:require [clojure.spec :as s]))
 
 ;; spec of app-db
@@ -14,6 +14,12 @@
 (s/def :nav.state/routes (s/coll-of :nav/route :kind vector?))
 (s/def :nav.state/index integer?)
 (s/def :nav/tab-state (s/keys :req [:nav.state/index :nav.state/routes]))
+(s/def :matt/matt string?)
+(s/def :fin.stuff/asset integer?)
+(s/def :fin.stuff/liab integer?)
+(s/def :fin.stuff/item (s/keys :req [:fin.stuff/asset :fin.stuff/name]))
+(s/def :fin/stuff (s/coll-of :fin.stuff/item))
+
 (s/def ::app-db
   (s/keys :req [:nav/tab-state]))
 
@@ -22,4 +28,7 @@
                                           :routes [#:nav.route{:key :IndexKey :routeName :Index}
                                                    #:nav.route{:key :SettingsKey :routeName :Settings}]}
              :nav/stack-state #:nav.routeName {:Index #:nav.state {:index  0
-                                                                   :routes [#:nav.route {:key :Home :routeName :Home}]}}})
+                                                                   :routes [#:nav.route {:key :Home :routeName :Home}]}}
+             :fin/stuff [{:fin.stuff/asset 5000 :fin.stuff/name "cash"} {:fin.stuff/asset 100000 :fin.stuff/name "house"}]})
+
+

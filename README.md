@@ -1,4 +1,16 @@
-> Update 2017-02-01: Got a VERY quick and dirty version for the new React Navigation library going. If you are looking for the old one for NavigationExperimental it is on the branch [old-re-navigate](https://github.com/vikeri/re-navigate/tree/old-re-navigate)
+below are the instructions for re-navigate, the example app i'm working from. the instructions should work, with some fiddling, for iOS. i've probably forgotten what it took to set this up. so if you run into problems, maybe just come by and i'll set you up.
+
+basically, follow [these directions](https://github.com/vikeri/re-navigate)
+
+
+to get the android version running, you'll have to do some stuff that you'll figure out on your own, or i'll tell you.
+ - i had to make a local.properties file in $proj-dir/android/ with contents:
+sdk.dir=/Users/$your-user-name/Library/sdk  (you might not if you follow these directions: https://facebook.github.io/react-native/releases/0.23/docs/android-setup.html)
+
+
+
+
+
 
 # re-navigate
 > Example of React Navigation with [re-frame](https://github.com/Day8/re-frame)/[re-natal](https://github.com/drapanjanas/re-natal/)

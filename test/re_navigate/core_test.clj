@@ -1,6 +1,6 @@
-(ns re-navigate.core-test
+(ns flierplath.core-test
   (:require [clojure.test :refer :all]
-            [re-navigate.core :refer :all]))
+            [flierplath.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
