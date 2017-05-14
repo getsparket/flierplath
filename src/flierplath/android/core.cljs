@@ -1,8 +1,8 @@
-(ns re-navigate.android.core
+(ns flierplath.android.core
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [re-navigate.events]
-            [re-navigate.subs]))
+            [flierplath.events]
+            [flierplath.subs]))
 
 (def ReactNative (js/require "react-native"))
 

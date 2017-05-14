@@ -1,4 +1,4 @@
-(ns re-navigate.subs
+(ns flierplath.subs
   (:require [re-frame.core :refer [reg-sub]]))
 
 (reg-sub

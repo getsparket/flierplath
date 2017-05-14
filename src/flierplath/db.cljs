@@ -1,4 +1,4 @@
-(ns re-navigate.db
+(ns flierplath.db
   (:require [clojure.spec :as s]))
 
 ;; spec of app-db

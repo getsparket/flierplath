@@ -1,9 +1,9 @@
-(ns re-navigate.ios.core
+(ns flierplath.ios.core
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [re-navigate.events]
+            [flierplath.events]
             [clojure.data :as d]
-            [re-navigate.subs]))
+            [flierplath.subs]))
 (js* "/* @flow */")
 (enable-console-print!)
 (def ReactNative (js/require "react-native"))

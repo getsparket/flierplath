@@ -1,8 +1,8 @@
-(ns re-navigate.events
+(ns flierplath.events
   (:require
     [re-frame.core :refer [reg-event-db after reg-event-fx]]
     [clojure.spec :as s]
-    [re-navigate.db :as db :refer [app-db]]))
+    [flierplath.db :as db :refer [app-db]]))
 
 ;; -- Interceptors ------------------------------------------------------------
 ;;
