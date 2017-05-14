@@ -26,3 +26,8 @@
  :list-assets
  (fn [db _]
    (str (:fin/stuff db))))
+
+(reg-sub
+ :get-greeting
+ (fn [db _]
+   "static android text"))
