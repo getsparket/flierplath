@@ -10,7 +10,8 @@
 (def root-el (r/as-element [reloader]))
 
 (figwheel/watch-and-reload
- :websocket-url "ws://localhost:3449/figwheel-ws"
+ ;; this url changes depending on the dev's use of avd, genymotion, real device etc.
+ :websocket-url "ws://10.0.2.2:3449/figwheel-ws" ;; don't commit changes to this just because you're doing git add -u.
  :heads-up-display false
  :jsload-callback #(swap! cnt inc))
 
